@@ -5,8 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 
 public class Transformator {
 
-    public <T, U> U transform(T source, Class target) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        Class<?> sourceClass = source.getClass();
+    public <T, U> U transform(T input, Class target) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        Class<?> sourceClass = input.getClass();
         Class<?> targetClass = target;
 
         U instanceOfTarget = (U) targetClass.getDeclaredConstructor().newInstance();
@@ -18,8 +18,8 @@ public class Transformator {
         int targetFieldI = 0;
         while (targetFieldI < targetFields.length && sourceFieldI < sourceFields.length) {
             if(validateFields(sourceFields[sourceFieldI], targetFields[targetFieldI])) {
-
-
+                targetFields[targetFieldI].set(instanceOfTarget,
+                        sourceFields[sourceFieldI].get(input));
                 targetFieldI++;
             } else {
                 sourceFieldI++;
@@ -32,7 +32,6 @@ public class Transformator {
     private boolean validateFields(Field sourceField, Field targetField) {
         if(targetField.getName().equals(sourceField.getName())
             && targetField.getType().equals(sourceField.getType())) {
-
             sourceField.setAccessible(true);
             targetField.setAccessible(true);
             return true;
