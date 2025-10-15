@@ -17,8 +17,8 @@ public class Transformator {
         int sourceFieldI = 0;
         int targetFieldI = 0;
         while (targetFieldI < targetFields.length && sourceFieldI < sourceFields.length) {
-            if(targetFields[targetFieldI].getName().equals(sourceFields[sourceFieldI].getName())) {
-                targetFields[targetFieldI].setAccessible(true);
+            if(validateFields(sourceFields[sourceFieldI], targetFields[targetFieldI])) {
+
 
                 targetFieldI++;
             } else {
@@ -27,5 +27,16 @@ public class Transformator {
         }
 
         return instanceOfTarget;
+    }
+
+    private boolean validateFields(Field sourceField, Field targetField) {
+        if(targetField.getName().equals(sourceField.getName())
+            && targetField.getType().equals(sourceField.getType())) {
+
+            sourceField.setAccessible(true);
+            targetField.setAccessible(true);
+            return true;
+        }
+        return false;
     }
 }
