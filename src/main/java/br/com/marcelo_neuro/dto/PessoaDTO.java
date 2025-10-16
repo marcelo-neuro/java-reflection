@@ -25,4 +25,13 @@ public class PessoaDTO {
     public String getCpf() {
         return cpf;
     }
+
+    @Override
+    public String toString() {
+        return "PessoaDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", cpf='" + cpf + '\'' +
+                '}';
+    }
 }
